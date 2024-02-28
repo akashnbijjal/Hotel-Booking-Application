@@ -21,42 +21,41 @@ public class RatingController {
 
 	@Autowired
 	private RatingServiceImpl service;
-	
-	
+
 	@PostMapping("addrating")
-	public ResponseEntity<Rating> addRating(@RequestBody Rating rating)
-	{
-		Rating r=service.addrate(rating);
-		return new ResponseEntity<Rating>(r,HttpStatus.CREATED);
-		
+	public ResponseEntity<Rating> addRating(@RequestBody Rating rating) {
+		Rating r = service.addrate(rating);
+		return new ResponseEntity<Rating>(r, HttpStatus.CREATED);
+
 	}
+
 	@GetMapping("allrating")
-	public ResponseEntity<List<Rating>> getallRating()
-	{
-		List<Rating> list=service.allRate();
-		return new ResponseEntity<List<Rating>>(list,HttpStatus.ACCEPTED);
-		
+	public ResponseEntity<List<Rating>> getallRating() {
+		List<Rating> list = service.allRate();
+		return new ResponseEntity<List<Rating>>(list, HttpStatus.ACCEPTED);
+
 	}
+
 	@GetMapping("{ratingId}")
-	public ResponseEntity<Rating> getRatingid(@PathVariable("ratingId") long ratingId)
-	{
-		Rating rating=service.getrate(ratingId);
-		return new ResponseEntity<Rating>(rating,HttpStatus.ACCEPTED);
-		
+	public ResponseEntity<Rating> getRatingid(@PathVariable("ratingId") long ratingId) {
+		Rating rating = service.getrate(ratingId);
+		return new ResponseEntity<Rating>(rating, HttpStatus.ACCEPTED);
+
 	}
+
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<Rating> Ratingbyuserid(@PathVariable("userId") long userId){
-	
-		Rating rating=service.getRatingbyuserid(userId);
-		return new ResponseEntity<Rating>(rating,HttpStatus.ACCEPTED);
-		
+	public ResponseEntity<Rating> Ratingbyuserid(@PathVariable("userId") long userId) {
+
+		Rating rating = service.getRatingbyuserid(userId);
+		return new ResponseEntity<Rating>(rating, HttpStatus.ACCEPTED);
+
 	}
+
 	@GetMapping("hotel/{hotelId}")
-	public ResponseEntity<Rating> RatingbyhotelId(@PathVariable("hotelId") long hotelId)
-	{
-		Rating rating=service.getRatingByHotelId(hotelId);
-		return new ResponseEntity<Rating>(rating,HttpStatus.ACCEPTED);
-		
+	public ResponseEntity<List<Rating>> RatingbyhotelId(@PathVariable("hotelId") long hotelId) {
+		List<Rating> rating = service.getRatingByHotelId(hotelId);
+		return new ResponseEntity<List<Rating>>(rating, HttpStatus.ACCEPTED);
+
 	}
-	
+
 }

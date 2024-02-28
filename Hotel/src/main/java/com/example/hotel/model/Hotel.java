@@ -28,7 +28,7 @@ public class Hotel {
 
 	private String about;
 
-	private int rating;
+	private double rating;
 
 	private String email;
 	
@@ -36,6 +36,4 @@ public class Hotel {
 	
 	private Map<String, Double> roomtypes;
 	
-	
-
 }

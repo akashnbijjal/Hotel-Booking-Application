@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -21,6 +22,6 @@ public class Hotel {
 
 	private String about;
 
-	private int rating;
+	private double rating;
 
 }

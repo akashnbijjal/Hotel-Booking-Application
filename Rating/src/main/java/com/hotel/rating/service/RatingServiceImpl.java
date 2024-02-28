@@ -1,11 +1,15 @@
 package com.hotel.rating.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.hotel.rating.exception.RatingNotFoundException;
 import com.hotel.rating.feign.HotelFeign;
 import com.hotel.rating.model.Hotel;
 import com.hotel.rating.model.Rating;
@@ -27,17 +31,22 @@ public class RatingServiceImpl implements RatingService {
 	public Rating addrate(Rating rating) {
 		long hotelId = rating.getHotelId();
 		int newRating = rating.getRating();
-		ResponseEntity<Hotel> response = hotelFeign.hotelbyid(hotelId);
-		if (response != null && response.getStatusCode() == HttpStatus.ACCEPTED) {
-
-			Hotel updatedhotel = response.getBody();
-			updatedhotel.setRating(newRating);
-			rating.setRatingId(sequenceGeneratorService.generateSequence(Rating.SEQUENCE_NAME));
-			return repo.save(rating);
-		} else {
-			return null;
+		List<Rating> allRates = getRatingByHotelId(hotelId);
+		double totalScore = newRating;
+		int totalResponses = 1;
+		for (Rating rate : allRates) {
+			totalScore += rate.getRating();
+			totalResponses++;
 		}
+		double newAverageRating = totalScore / totalResponses;
 
+		Hotel newHotel = new Hotel();
+		newHotel.setRating(newAverageRating);
+		ResponseEntity<Hotel> response = hotelFeign.updatehotel(hotelId, newHotel);
+		Hotel updatedhotel = response.getBody();
+		updatedhotel.setRating(newRating);
+		rating.setRatingId(sequenceGeneratorService.generateSequence(Rating.SEQUENCE_NAME));
+		return repo.save(rating);
 	}
 
 	@Override
@@ -47,18 +56,30 @@ public class RatingServiceImpl implements RatingService {
 
 	@Override
 	public Rating getrate(long ratingId) {
-		return repo.findById(ratingId).get();
+		if (repo.existsById(ratingId)) {
+			return repo.findById(ratingId).get();
+		} else {
+			throw new RatingNotFoundException("Rating not found ID: " + ratingId);
+		}
 	}
 
 	@Override
 	public Rating getRatingbyuserid(long userId) {
-		return repo.findByUserId(userId);
+		if (repo.existsByUserId(userId)) {
+			return repo.findByUserId(userId);
+		} else {
+			throw new RatingNotFoundException("Rating not found with userId: " + userId);
+		}
 	}
 
 	@Override
-	public Rating getRatingByHotelId(long hotelId) {
+	public List<Rating> getRatingByHotelId(long hotelId) {
+		if (repo.existsByHotelId(hotelId)) {
+			return repo.findAllByHotelId(hotelId);
+		} else {
+			throw new RatingNotFoundException("Rating not found with HotelId: " + hotelId);
 
-		return repo.findByHotelId(hotelId);
+		}
 	}
 
 }
