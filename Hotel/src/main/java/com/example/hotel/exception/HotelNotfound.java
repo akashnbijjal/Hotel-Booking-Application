@@ -2,11 +2,11 @@ package com.example.hotel.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class HotelNotfound extends RuntimeException {
 
 	/**

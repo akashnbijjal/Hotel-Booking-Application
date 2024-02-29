@@ -16,18 +16,18 @@ public class ExceptionInterceptor extends ResponseEntityExceptionHandler {
 	public final ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest request) throws Exception {
 		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
 				request.getDescription(false));
-		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_GATEWAY);
 	}
 	
 	@ExceptionHandler(HotelAlreadyExist.class)
 	public final ResponseEntity<ErrorDetails> hotelalreadyexistsexception(HotelAlreadyExist ex, WebRequest request)throws HotelAlreadyExist{
 		ErrorDetails errorDetails=new ErrorDetails(LocalDateTime.now(),ex.getMsg(),request.getDescription(false));
-		return new ResponseEntity<ErrorDetails>(errorDetails,HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ErrorDetails>(errorDetails,HttpStatus.BAD_GATEWAY);
 	}
 	@ExceptionHandler(HotelNotfound.class)
 	public final ResponseEntity<ErrorDetails> hotelnotfoundexception(HotelNotfound ex, WebRequest request)throws HotelNotfound{
 		ErrorDetails errorDetails=new ErrorDetails(LocalDateTime.now(),ex.getMsg(),request.getDescription(false));
-		return new ResponseEntity<ErrorDetails>(errorDetails,HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ErrorDetails>(errorDetails,HttpStatus.BAD_GATEWAY);
 	}
 	
 	

@@ -10,9 +10,9 @@ public interface HotelService {
 
 	List<Hotel> getAll();
 
-	Hotel getbyid(long hotelid);
+	public Hotel getById(long hotelId);
 
-	Hotel getbylocation(String location);
+	 public Hotel getByLocation(String location);
 
 	Hotel updateHotel(long hotelid, Hotel hotel);
 }

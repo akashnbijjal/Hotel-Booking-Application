@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.hotel.exception.HotelAlreadyExist;
+import com.example.hotel.exception.HotelNotfound;
 import com.example.hotel.model.Hotel;
 import com.example.hotel.repository.hotelrepository;
 
@@ -39,31 +40,44 @@ public class HotelServiceImpl implements HotelService {
 
 	@Override
 	public List<Hotel> getAll() {
+		logger.info("Fetching all hotels...");
 		List<Hotel> list = repo.findAll();
+		logger.info("Found {} hotels", list.size());
 		return list;
 	}
 
 	@Override
-	public Hotel getbyid(long hotelid) {
-		Hotel hotel = repo.findById(hotelid).get();
+	public Hotel getById(long hotelId) {
+		logger.info("Fetching hotel by ID: {}", hotelId);
+		Hotel hotel = repo.findById(hotelId).orElseThrow(() -> {
+			logger.error("Hotel not found with ID: {}", hotelId);
+			return new HotelNotfound("Hotel Not Found with ID: " + hotelId);
+		});
+		logger.info("Found hotel: {}", hotel);
 		return hotel;
-
 	}
 
 	@Override
-	public Hotel getbylocation(String location) {
+	public Hotel getByLocation(String location) {
+		logger.info("Fetching hotel by location: {}", location);
 		Hotel hotel = repo.findByLocationIgnoreCaseContaining(location);
+		if (hotel == null) {
+			logger.warn("No hotel found for location: {}", location);
+			throw new HotelNotfound("No hotel found for location: " + location);
+		}
+		logger.info("Found hotel: {}", hotel);
 		return hotel;
 	}
 
 	@Override
-	public Hotel updateHotel(long hotelid, Hotel updatedHotel) {
-		Optional<Hotel> optionalExistingHotel = repo.findById(hotelid);
+	public Hotel updateHotel(long hotelId, Hotel updatedHotel) {
+		logger.info("Updating hotel with ID: {}", hotelId);
+		Optional<Hotel> optionalExistingHotel = repo.findById(hotelId);
 
 		if (optionalExistingHotel.isPresent()) {
 			Hotel existingHotel = optionalExistingHotel.get();
 
-			// Check each field of the updatedHotel and update only if the field is not null
+			// Update hotel fields if provided in updatedHotel
 			if (updatedHotel.getName() != null) {
 				existingHotel.setName(updatedHotel.getName());
 			}
@@ -77,10 +91,12 @@ public class HotelServiceImpl implements HotelService {
 				existingHotel.setAbout(updatedHotel.getAbout());
 			}
 
+			logger.info("Hotel updated successfully: {}", existingHotel);
 			return repo.save(existingHotel);
+		} else {
+			logger.error("Hotel not found with ID: {}", hotelId);
+			throw new HotelNotfound("Hotel Not Found with ID: " + hotelId);
 		}
-		return null;
-
 	}
 
 }

@@ -42,14 +42,14 @@ public class HotelController {
 	@Operation(summary = "Get hotel by hotelid", description = "Endpoint to get hotel by hotelid", operationId = "gethotel")
 	@GetMapping("/id/{hotelid}")
 	public ResponseEntity<Hotel> hotelbyid(@PathVariable("hotelid") long hotelid) {
-		Hotel hotel = service.getbyid(hotelid);
+		Hotel hotel = service.getById(hotelid);
 		return new ResponseEntity<Hotel>(hotel, HttpStatus.ACCEPTED);
 	}
 
 	@Operation(summary = "get hotel by location", description = "Endpoint to get location by hotel", operationId = "getlocation")
 	@GetMapping("/location/{location}")
 	public ResponseEntity<Hotel> getbylocation(@PathVariable("location") String location) {
-		Hotel hotel = service.getbylocation(location);
+		Hotel hotel = service.getByLocation(location);
 		return new ResponseEntity<Hotel>(hotel, HttpStatus.ACCEPTED);
 	}
 
