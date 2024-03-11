@@ -21,9 +21,6 @@ public class BookingServiceImpl implements BookingService {
 	private bookingrepository repo;
 
 	@Autowired
-	private RestTemplate restTemplate;
-
-	@Autowired
 	private HotelService feignclient;
 
 	@Autowired
@@ -54,10 +51,9 @@ public class BookingServiceImpl implements BookingService {
 	public List<Booking> allbookings() {
 		List<Booking> list = repo.findAll();
 		for (Booking booking : list) {
-			Hotel hotel = restTemplate.getForObject("http://localhost:8081/hotel/id/" + booking.getHotelId(),
-					Hotel.class);
+			ResponseEntity<Hotel> hotel = feignclient.hotelbyid(booking.getHotelId());
 
-			booking.setHoteldetails(hotel);
+			booking.setHoteldetails(hotel.getBody());
 		}
 		return list;
 	}
@@ -66,8 +62,6 @@ public class BookingServiceImpl implements BookingService {
 	public Booking getbookingbyid(long bookingId) throws BookingNotFound {
 		if (repo.existsById(bookingId)) {
 			Booking booking = repo.findById(bookingId).get();
-//			Hotel hotel = restTemplate.getForObject("http://localhost:8081/hotel/id/" + booking.getHotelId(),
-//					Hotel.class);
 			ResponseEntity<Hotel> hotel = feignclient.hotelbyid(booking.getBookingId());
 
 			booking.setHoteldetails(hotel.getBody());

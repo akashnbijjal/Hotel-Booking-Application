@@ -15,7 +15,6 @@ public class CheckinServiceImpl implements CheckinService {
 
 	@Override
 	public CheckInrecord addcheckin(CheckInrecord checkin) {
-		
 		CheckInrecord c = repo.save(checkin);
 		return c;
 	}

@@ -30,6 +30,5 @@ public class CheckInrecord {
 	
 	private LocalDateTime checkOutTime;
 
-	
-	
+
 }

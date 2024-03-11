@@ -31,17 +31,16 @@ public class checkincontroller {
 		List<CheckInrecord> check = service.getcheckin();
 		return check;
 	}
+
 	@GetMapping("/Id/{checkinId}")
-	public CheckInrecord getcheckinbyid(@PathVariable("checkinId") long checkinId)
-	{
-		CheckInrecord check=service.getcheckinbyid(checkinId);
+	public CheckInrecord getcheckinbyid(@PathVariable("checkinId") long checkinId) {
+		CheckInrecord check = service.getcheckinbyid(checkinId);
 		return check;
 	}
-	
+
 	@GetMapping("{userId}")
-	public CheckInrecord getcheckinuserid(@PathVariable("userId") long userId)
-	{
-		CheckInrecord check=service.getcheckinbyuserid(userId);
+	public CheckInrecord getcheckinuserid(@PathVariable("userId") long userId) {
+		CheckInrecord check = service.getcheckinbyuserid(userId);
 		return check;
 	}
 

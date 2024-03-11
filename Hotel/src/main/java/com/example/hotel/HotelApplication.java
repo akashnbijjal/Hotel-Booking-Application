@@ -18,10 +18,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 )
 public class HotelApplication {
 
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(HotelApplication.class, args);

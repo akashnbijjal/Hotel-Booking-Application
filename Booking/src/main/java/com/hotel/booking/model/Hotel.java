@@ -6,11 +6,11 @@ import org.springframework.data.annotation.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Data
+@EqualsAndHashCode
 @AllArgsConstructor
-@NoArgsConstructor
 public class Hotel {
 	@Id
 	private long hotelId;
@@ -21,14 +21,20 @@ public class Hotel {
 
 	private String about;
 
-	private int rating;
+	private Double rating;
 
 	private String email;
-	
+
 	private String contact;
-	
+
 	private Map<String, Double> roomtypes;
-	
-	
+
+	public long getHotelId() {
+		return hotelId;
+	}
+
+	public Map<String, Double> getRoomtypes() {
+		return roomtypes;
+	}
 
 }
